@@ -14,12 +14,11 @@ export function DimensionTable() {
       <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900">
         <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
         <p className="leading-relaxed">
-          <strong className="font-semibold">Planning Reference Disclaimer:</strong> The dimensional
-          data below is reproduced directly from Page 8 of the Lifestyle Elevators official
-          technical brochure. Hoistway requirements, pit depths, and entrance openings vary based on
-          architectural blueprints, seismic zone standards, and Indian Bureau of Standards (BIS)
-          elevator codes. Final civil shaft dimensions must be verified by a Lifestyle Elevators
-          structural engineer prior to site execution.
+          <strong className="font-semibold">Planning Reference Note:</strong> The dimensional data
+          below is reproduced directly from Page 8 of the Lifestyle Elevators official technical
+          brochure. Hoistway requirements, pit depths, and entrance openings vary based on
+          architectural blueprints and site constraints. Final civil shaft dimensions must be
+          confirmed with our engineering desk prior to site execution.
         </p>
       </div>
 

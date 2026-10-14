@@ -42,6 +42,8 @@ export function FloatingWhatsApp() {
             rel="noopener noreferrer"
             aria-label="Chat with Lifestyle Elevators on WhatsApp"
             onMouseEnter={() => setShowTooltip(true)}
+            onFocus={() => setShowTooltip(true)}
+            onBlur={() => setShowTooltip(false)}
             className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl transition-all duration-200 hover:scale-105 hover:bg-[#20ba59] focus:outline-none focus:ring-4 focus:ring-green-400/40 active:scale-95"
           >
             <MessageCircle className="h-7 w-7 fill-current" />
@@ -94,6 +96,8 @@ export function FloatingWhatsApp() {
       <a
         href={COMPANY.phones[0].telUri}
         onMouseEnter={() => setShowTooltip(true)}
+        onFocus={() => setShowTooltip(true)}
+        onBlur={() => setShowTooltip(false)}
         aria-label={`Call Lifestyle Elevators at ${COMPANY.phones[0].display}`}
         className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-brand-gold-400 bg-brand-blue-900 text-white shadow-xl transition-all duration-200 hover:scale-105 hover:bg-brand-blue-800 focus:outline-none focus:ring-4 focus:ring-brand-gold-500/40 active:scale-95"
       >

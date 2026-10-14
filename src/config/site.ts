@@ -21,7 +21,7 @@ export const SITE_CONFIG = {
   name: 'Lifestyle Elevators',
   shortName: 'Lifestyle Elevators',
   description:
-    'Leading elevator manufacturer, installation, repair, and AMC service provider in Bangalore, India. Specializing in Passenger, Home, Hospital, Goods, Hydraulic, and MRL lifts.',
+    'Elevator manufacturer, installation, repair, and AMC service provider in Bangalore, India. Specializing in Passenger, Home, Hospital, Goods, Hydraulic, and MRL lifts.',
   url: getSiteUrl(),
   ogImage: '/images/branding/og-preview.png',
   mainNav: [

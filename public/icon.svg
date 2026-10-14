@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c2440" />
+      <stop offset="100%" stop-color="#071628" />
+    </linearGradient>
+    <linearGradient id="goldIconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5ebc3" />
+      <stop offset="50%" stop-color="#dfc26b" />
+      <stop offset="100%" stop-color="#c59b27" />
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded App Icon Background -->
+  <rect width="128" height="128" rx="28" fill="url(#bgGrad)" />
+  <rect width="124" height="124" x="2" y="2" rx="26" fill="none" stroke="#c59b27" stroke-width="2" stroke-opacity="0.3" />
+
+  <!-- Iconic Crescent Arc -->
+  <path d="M 68,106 C 36,112 16,92 18,68 C 20,44 48,22 108,36 C 84,26 38,26 26,56 C 14,84 46,102 68,106 Z"
+        fill="url(#goldIconGrad)" />
+
+  <!-- Monogram "L" -->
+  <text x="44" y="86"
+        font-family="'Playfair Display', 'Cinzel', 'Georgia', serif"
+        font-size="64"
+        font-weight="700"
+        fill="url(#goldIconGrad)">
+    L
+  </text>
+</svg>

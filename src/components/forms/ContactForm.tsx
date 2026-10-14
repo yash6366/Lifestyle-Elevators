@@ -10,7 +10,11 @@ import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 
 export function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [submissionStatus, setSubmissionStatus] = useState<
+    'idle' | 'opened_whatsapp' | 'unconfigured_fallback'
+  >('idle');
+  const [generatedText, setGeneratedText] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -47,17 +51,37 @@ export function ContactForm() {
       .filter(Boolean)
       .join('\n');
 
+    setGeneratedText(text);
+
     const waConfig = getWhatsAppConfig();
     const result = buildWhatsAppUrl(text);
 
     if (result.success && result.url && waConfig.isConfigured) {
+      setSubmissionStatus('opened_whatsapp');
       window.open(result.url, '_blank', 'noopener,noreferrer');
+    } else {
+      setSubmissionStatus('unconfigured_fallback');
     }
 
-    setSubmitted(true);
     setIsSubmitting(false);
-    reset();
   };
+
+  const copyToClipboard = async () => {
+    if (!generatedText) return;
+    try {
+      await navigator.clipboard.writeText(generatedText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    } catch {
+      // Ignore clipboard fallback
+    }
+  };
+
+  const mailtoUri = generatedText
+    ? `mailto:${COMPANY.email.address}?subject=${encodeURIComponent(
+        'Website Enquiry - Lifestyle Elevators'
+      )}&body=${encodeURIComponent(generatedText)}`
+    : COMPANY.email.mailtoUri;
 
   return (
     <div className="rounded-3xl border border-slate-200/90 bg-white p-6 shadow-lg sm:p-10">
@@ -71,29 +95,95 @@ export function ContactForm() {
         </p>
       </div>
 
-      {submitted ? (
+      {submissionStatus === 'opened_whatsapp' && (
         <div className="animate-fade-in space-y-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
             <CheckCircle2 className="h-6 w-6" />
           </div>
           <div>
-            <h4 className="text-base font-bold text-emerald-950">Enquiry Received</h4>
+            <h4 className="text-base font-bold text-emerald-950">WhatsApp Opened</h4>
             <p className="mx-auto mt-1 max-w-md text-xs text-emerald-800">
-              Thank you for reaching out to Lifestyle Elevators. Our engineering desk will review
-              your message and contact you on the provided number.
+              Your inquiry has been formatted and opened in WhatsApp. Please tap &quot;Send&quot; in
+              your WhatsApp application to reach our engineering desk directly.
             </p>
           </div>
           <div className="flex justify-center gap-3 pt-2">
             <button
               type="button"
-              onClick={() => setSubmitted(false)}
+              onClick={() => {
+                setSubmissionStatus('idle');
+                reset();
+              }}
               className="text-xs font-semibold text-brand-blue-900 underline hover:text-brand-gold-600"
             >
               Submit Another Message
             </button>
           </div>
         </div>
-      ) : (
+      )}
+
+      {submissionStatus === 'unconfigured_fallback' && (
+        <div className="animate-fade-in space-y-5 rounded-2xl border border-brand-gold-200 bg-brand-gold-50/50 p-6">
+          <div className="flex items-start gap-3">
+            <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-brand-gold-600" />
+            <div>
+              <h4 className="text-base font-bold text-brand-blue-950">Enquiry Formatted & Ready</h4>
+              <p className="mt-1 text-xs leading-relaxed text-slate-700">
+                Direct automated WhatsApp capture is undergoing telephone line verification. Your
+                inquiry is formatted and ready to deliver immediately:
+              </p>
+            </div>
+          </div>
+
+          {generatedText && (
+            <div className="rounded-xl border border-slate-200 bg-white p-4">
+              <pre className="whitespace-pre-wrap font-mono text-xs text-slate-700">
+                {generatedText}
+              </pre>
+            </div>
+          )}
+
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={copyToClipboard}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-brand-blue-900 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-brand-blue-800"
+            >
+              <Send className="h-3.5 w-3.5" />
+              <span>{copied ? 'Copied to Clipboard!' : 'Copy Enquiry Text'}</span>
+            </button>
+
+            <a
+              href={mailtoUri}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-brand-blue-200 bg-white px-4 py-2.5 text-xs font-bold text-brand-blue-900 shadow-sm transition-colors hover:bg-slate-50"
+            >
+              <span>Email to {COMPANY.email.address}</span>
+            </a>
+
+            <a
+              href={COMPANY.phones[0].telUri}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+            >
+              <span>Call {COMPANY.phones[0].display}</span>
+            </a>
+          </div>
+
+          <div className="border-t border-brand-gold-200/60 pt-3">
+            <button
+              type="button"
+              onClick={() => {
+                setSubmissionStatus('idle');
+                reset();
+              }}
+              className="text-xs font-semibold text-brand-blue-900 underline hover:text-brand-gold-600"
+            >
+              ← Clear & Submit Another Message
+            </button>
+          </div>
+        </div>
+      )}
+
+      {submissionStatus === 'idle' && (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
           <div>
             <label

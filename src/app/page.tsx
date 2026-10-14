@@ -21,7 +21,7 @@ import { ServiceCard } from '@/components/services/ServiceCard';
 import { SectionHeader } from '@/components/shared/SectionHeader';
 
 export default function HomePage() {
-  const featuredProducts = MAIN_ELEVATOR_PRODUCTS.filter((p) => p.featured).slice(0, 4);
+  const featuredProducts = MAIN_ELEVATOR_PRODUCTS.filter((p) => p.featured);
 
   const trustPillars = [
     {
@@ -190,7 +190,7 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {featuredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -237,7 +237,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           badge="Turnkey Services"
-          title="From Initial Fabrication to 24/7 Lifetime Maintenance"
+          title="Manufacturing, Installation, Repair & Annual Maintenance Contracts"
           subtitle="Comprehensive elevator engineering lifecycle support backed by experienced vertical mobility technicians."
         />
 

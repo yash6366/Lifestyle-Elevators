@@ -14,6 +14,42 @@ interface QuotationFormProps {
   initialProductOrService?: string;
 }
 
+export function matchProductOrService(param?: string): ProductServiceOption {
+  if (!param || !param.trim()) return 'Passenger Lift';
+  const clean = param.trim().toLowerCase();
+
+  // 1. Direct match
+  const exact = PRODUCT_SERVICE_OPTIONS.find((opt) => opt.toLowerCase() === clean);
+  if (exact) return exact;
+
+  // 2. Intelligent fuzzy mapping
+  if (clean.includes('hydraulic')) return 'Hydraulic Elevator';
+  if (clean.includes('mrl') || clean.includes('machine room-less')) return 'MRL Elevator';
+  if (clean.includes('hospital')) return 'Hospital Lift';
+  if (clean.includes('home') || clean.includes('villa')) return 'Home Lift';
+  if (clean.includes('goods') || clean.includes('freight')) return 'Goods Lift';
+  if (clean.includes('passenger')) return 'Passenger Lift';
+  if (clean.includes('manufacturing') || clean.includes('supply')) return 'Manufacturing & Supply';
+  if (clean.includes('installation')) return 'Elevator Installation';
+  if (clean.includes('repair') || clean.includes('maintenance support'))
+    return 'Repair & Service Support';
+  if (clean.includes('amc') || clean.includes('contract'))
+    return 'Annual Maintenance Contract (AMC)';
+  if (
+    clean.includes('door') ||
+    clean.includes('cabin') ||
+    clean.includes('motor') ||
+    clean.includes('controller') ||
+    clean.includes('rope') ||
+    clean.includes('schematic') ||
+    clean.includes('drawing')
+  ) {
+    return 'Elevator Components & Modernisation';
+  }
+
+  return 'Other';
+}
+
 export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
   const [submitting, setSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -22,23 +58,20 @@ export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
     'idle' | 'opened_whatsapp' | 'unconfigured_fallback'
   >('idle');
 
-  // Find exact matching option from catalog if initialProductOrService provided
-  const matchedInitial =
-    PRODUCT_SERVICE_OPTIONS.find(
-      (opt) => opt.toLowerCase() === initialProductOrService?.toLowerCase()
-    ) || (initialProductOrService ? 'Other' : 'Passenger Lift');
+  const matchedInitial = matchProductOrService(initialProductOrService);
 
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<QuotationSchemaType>({
     resolver: zodResolver(quotationSchema),
     defaultValues: {
       fullName: '',
       phoneNumber: '',
-      productOrService: matchedInitial as ProductServiceOption,
+      productOrService: matchedInitial,
       buildingType: 'Residential',
       projectLocation: '',
       requirements: '',
@@ -47,12 +80,8 @@ export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
 
   useEffect(() => {
     if (initialProductOrService) {
-      const match = PRODUCT_SERVICE_OPTIONS.find(
-        (opt) => opt.toLowerCase() === initialProductOrService.toLowerCase()
-      );
-      if (match) {
-        setValue('productOrService', match);
-      }
+      const match = matchProductOrService(initialProductOrService);
+      setValue('productOrService', match);
     }
   }, [initialProductOrService, setValue]);
 
@@ -179,6 +208,13 @@ export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
           <select
             id="productOrService"
             {...register('productOrService')}
+            value={watch('productOrService') || matchedInitial}
+            onChange={(e) => {
+              setValue('productOrService', e.target.value as ProductServiceOption, {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
+            }}
             className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 focus:border-brand-blue-800 focus:outline-none focus:ring-2 focus:ring-brand-blue-100"
           >
             {PRODUCT_SERVICE_OPTIONS.map((opt) => (

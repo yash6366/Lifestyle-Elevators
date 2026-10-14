@@ -308,15 +308,15 @@ export const BROCHURE_COMPONENTS: ComponentItem[] = [
   },
   {
     id: 'bharath-bijilee-gearless-motor',
-    name: 'Bharath Bijilee Gearless Motor',
+    name: 'Bharath Bijlee Gearless Motor',
     category: 'motors',
     categoryName: 'Traction Motors',
-    description: 'High-reliability permanent-magnet electric gearless machine from Bharat Bijlee.',
+    description: 'Electric gearless traction motor manufactured by Bharat Bijlee.',
     specifications: [
-      { label: 'Phase', value: 'Single Phase / 3 Phase' },
+      { label: 'Phase', value: 'Single Phase' },
       { label: 'Voltage', value: '110 - 380 V' },
       { label: 'Frequency', value: '50 - 60 Hz' },
-      { label: 'Type', value: 'Gearless Synchronous' },
+      { label: 'Type', value: 'Gearless' },
       { label: 'Power Source', value: 'Electric' },
     ],
     image: '/images/products/components/motor-bharath-bijilee.jpg',
@@ -328,13 +328,8 @@ export const BROCHURE_COMPONENTS: ComponentItem[] = [
     name: 'Usha Martin 13 mm Wire Rope',
     category: 'ropes',
     categoryName: 'Suspension & Ropes',
-    description:
-      'High-tensile, high-durability steel wire suspension ropes manufactured by Usha Martin for passenger safety.',
-    specifications: [
-      { label: 'Diameter', value: '13 mm' },
-      { label: 'Standard', value: 'IS/ISO Elevator Grade' },
-      { label: 'Core', value: 'Natural Fibre / Independent Wire Rope Core' },
-    ],
+    description: 'Steel wire suspension rope manufactured by Usha Martin.',
+    specifications: [{ label: 'Diameter', value: '13 mm' }],
     image: '/images/products/components/rope-usha-martin.jpg',
   },
 

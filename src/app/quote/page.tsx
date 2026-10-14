@@ -16,7 +16,7 @@ function QuoteContent() {
     <div className="flex flex-col gap-12 pb-24 sm:gap-16">
       {/* 1. Header Hero */}
       <section className="border-b border-brand-blue-900 bg-brand-blue-950 py-14 text-white sm:py-20">
-        <div className="mx-auto max-w-3xl max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
           <span className="mb-3 inline-block rounded-full border border-brand-gold-400/30 bg-brand-gold-500/20 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-gold-300">
             Custom Vertical Mobility Estimation
           </span>
@@ -36,7 +36,10 @@ function QuoteContent() {
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
           {/* Left Column: Quotation Form */}
           <div className="lg:col-span-8">
-            <QuotationForm initialProductOrService={initialSelection} />
+            <QuotationForm
+              key={initialSelection || 'default'}
+              initialProductOrService={initialSelection}
+            />
           </div>
 
           {/* Right Column: Guidance & Direct Phone reach */}
@@ -59,8 +62,8 @@ function QuoteContent() {
                     2
                   </span>
                   <span>
-                    We verify pit depth, overhead, and entrance clearances against Indian lift
-                    standards.
+                    We verify pit depth, overhead, and entrance clearances against our standard
+                    hoistway measurement specifications.
                   </span>
                 </li>
                 <li className="flex items-start gap-2.5">

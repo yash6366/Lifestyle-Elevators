@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -11,6 +11,12 @@ const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-playfair',
 });
 
 export const viewport: Viewport = {
@@ -26,7 +32,7 @@ export const metadata: Metadata = {
     template: `%s | ${COMPANY.name}`,
   },
   description:
-    'Leading elevator manufacturer, installation, repair, and AMC service provider in Bangalore. Specializing in Passenger, Hospital, Home, Goods, Hydraulic, and MRL lifts.',
+    'Elevator manufacturer, installation, repair, and AMC service provider in Bangalore. Specializing in Passenger, Hospital, Home, Goods, Hydraulic, and MRL lifts.',
   keywords: [
     'Lifestyle Elevators',
     'Elevator manufacturer Bangalore',
@@ -81,8 +87,11 @@ export const metadata: Metadata = {
     images: ['/images/branding/hero-elevator.jpg'],
   },
   icons: {
-    icon: '/images/branding/logo.png',
-    apple: '/images/branding/logo.png',
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/images/branding/logo.png', type: 'image/png' },
+    ],
+    apple: '/icon.svg',
   },
 };
 
@@ -92,7 +101,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="flex min-h-screen flex-col bg-slate-50 font-sans text-slate-900 antialiased">
         {/* Skip to Main Content for Accessibility */}
         <a

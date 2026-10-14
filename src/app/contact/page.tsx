@@ -17,7 +17,7 @@ export default function ContactPage() {
     <div className="flex flex-col gap-16 pb-24 sm:gap-20">
       {/* 1. Header Hero */}
       <section className="border-b border-brand-blue-900 bg-brand-blue-950 py-16 text-white sm:py-24">
-        <div className="mx-auto max-w-3xl max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
           <span className="mb-3 inline-block rounded-full border border-brand-gold-400/30 bg-brand-gold-500/20 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-gold-300">
             Reach Out to Our Desk
           </span>

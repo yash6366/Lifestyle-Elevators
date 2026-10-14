@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 180" width="100%" height="100%">
+  <defs>
+    <linearGradient id="goldGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5ebc3" />
+      <stop offset="45%" stop-color="#dfc26b" />
+      <stop offset="100%" stop-color="#c59b27" />
+    </linearGradient>
+    <linearGradient id="arcGradDark" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#c59b27" />
+      <stop offset="50%" stop-color="#f5ebc3" />
+      <stop offset="100%" stop-color="#dfc26b" />
+    </linearGradient>
+  </defs>
+
+  <!-- Architectural Crescent Arc -->
+  <path d="M 230,154 C 115,172 40,118 42,76 C 44,38 122,12 272,48 C 218,34 108,30 74,68 C 44,102 110,146 230,154 Z"
+        fill="url(#arcGradDark)" />
+
+  <!-- "Lifestyle" Typography -->
+  <text x="82" y="104"
+        font-family="'Playfair Display', 'Cinzel', 'Georgia', serif"
+        font-size="78"
+        font-weight="700"
+        fill="url(#goldGradDark)"
+        letter-spacing="-1">
+    Lifestyle
+  </text>
+
+  <!-- "E L E V A T O R S" Subtitle -->
+  <text x="142" y="142"
+        font-family="'Inter', 'Montserrat', 'Segoe UI', sans-serif"
+        font-size="20"
+        font-weight="700"
+        fill="#f8fafc"
+        letter-spacing="14">
+    ELEVATORS
+  </text>
+</svg>

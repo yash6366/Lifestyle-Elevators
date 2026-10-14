@@ -7,6 +7,12 @@ test.describe('Quotation & WhatsApp Lead Workflow', () => {
     await expect(select).toHaveValue('Hospital Lift');
   });
 
+  test('intelligently maps plural catalog names to select option', async ({ page }) => {
+    await page.goto('/quote?product=Hydraulic%20Elevators');
+    const select = page.getByLabel(/Selected Elevator or Service/i);
+    await expect(select).toHaveValue('Hydraulic Elevator');
+  });
+
   test('validates form inputs and prevents submission when empty', async ({ page }) => {
     await page.goto('/quote');
     const submitBtn = page.getByRole('button', { name: /Request Quotation via WhatsApp/i });
@@ -18,7 +24,7 @@ test.describe('Quotation & WhatsApp Lead Workflow', () => {
     ).toBeVisible();
   });
 
-  test('submits valid form and triggers unconfigured fallback notice safely', async ({ page }) => {
+  test('submits valid form and launches WhatsApp click-to-chat delivery', async ({ page }) => {
     await page.goto('/quote');
 
     await page.getByLabel(/Your Full Name/i).fill('Naveen Gowda');
@@ -26,12 +32,58 @@ test.describe('Quotation & WhatsApp Lead Workflow', () => {
     await page.getByLabel(/Project Location/i).fill('Jayanagar, Bangalore');
     await page.getByLabel(/Specific Requirements/i).fill('4 Stops, SS Wooden Cabin');
 
+    // Intercept or handle popup if opened
+    const popupPromise = page.waitForEvent('popup').catch(() => null);
+
     const submitBtn = page.getByRole('button', { name: /Request Quotation via WhatsApp/i });
     await submitBtn.click();
 
-    // Fallback notice should appear
-    await expect(page.getByText('Quotation Formatted & Ready')).toBeVisible();
-    await expect(page.getByText(/Naveen Gowda/)).toBeVisible();
-    await expect(page.getByRole('button', { name: /Copy Quotation Text/i })).toBeVisible();
+    // Verify WhatsApp Click-to-Chat Launch state
+    await expect(page.getByText('WhatsApp Click-to-Chat Launched!')).toBeVisible();
+    await expect(
+      page.getByText(/Your quotation details have been prefilled into WhatsApp/i)
+    ).toBeVisible();
+
+    const popup = await popupPromise;
+    if (popup) {
+      expect(popup.url()).toContain('917795551118');
+      await popup.close();
+    }
+  });
+
+  test('submits valid contact form and launches WhatsApp delivery', async ({ page }) => {
+    await page.goto('/contact');
+
+    await page.getByLabel(/Your Name/i).fill('Kiran Rao');
+    await page.getByLabel(/Phone Number/i).fill('+91 9986028416');
+    await page.getByLabel(/Enquiry Subject/i).fill('Elevator Maintenance AMC');
+    await page.getByLabel(/Your Message/i).fill(
+      'Need quotation for AMC service for residential lift in Bangalore.'
+    );
+
+    const popupPromise = page.waitForEvent('popup').catch(() => null);
+
+    const submitBtn = page.getByRole('button', { name: /Submit Enquiry/i });
+    await submitBtn.click();
+
+    // Verify WhatsApp Opened state
+    await expect(page.getByText('WhatsApp Opened')).toBeVisible();
+    await expect(
+      page.getByText(/Your inquiry has been formatted and opened in WhatsApp/i)
+    ).toBeVisible();
+
+    const popup = await popupPromise;
+    if (popup) {
+      expect(popup.url()).toContain('917795551118');
+      await popup.close();
+    }
+  });
+
+  test('renders verified WhatsApp click-to-chat floating button with target number', async ({ page }) => {
+    await page.goto('/');
+    const waLink = page.getByRole('link', { name: /Chat with Lifestyle Elevators on WhatsApp/i });
+    await expect(waLink).toBeVisible();
+    await expect(waLink).toHaveAttribute('href', /wa\.me\/917795551118/);
   });
 });
+

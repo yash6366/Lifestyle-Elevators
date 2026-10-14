@@ -51,12 +51,12 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Column 1: Brand & Overview */}
           <div className="space-y-4">
-            <div className="relative h-14 w-48 rounded-lg bg-white/95 p-2">
+            <div className="relative h-14 w-48">
               <Image
-                src="/images/branding/logo.png"
+                src="/images/branding/logo-dark.svg"
                 alt="Lifestyle Elevators Logo"
                 fill
-                className="object-contain p-1"
+                className="object-contain object-left"
                 sizes="200px"
               />
             </div>
@@ -256,7 +256,7 @@ export function Footer() {
             © {currentYear} {COMPANY.name}. All rights reserved. Registered in Bangalore, Karnataka.
           </p>
           <p className="text-center text-slate-500 sm:text-right">
-            Vertical Transportation & Elevator Engineering • ISO Grade Components & Safe Movement
+            Comprehensive Vertical & Trans Movement Solutions • Safety, Reliability & Quality
           </p>
         </div>
       </div>

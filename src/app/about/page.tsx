@@ -66,7 +66,7 @@ export default function AboutPage() {
     <div className="flex flex-col gap-20 pb-20 sm:gap-24">
       {/* 1. Header Hero */}
       <section className="border-b border-brand-blue-900 bg-brand-blue-950 py-16 text-white sm:py-24">
-        <div className="mx-auto max-w-3xl max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
           <span className="mb-3 inline-block rounded-full border border-brand-gold-400/30 bg-brand-gold-500/20 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-gold-300">
             Company Overview
           </span>
@@ -124,7 +124,7 @@ export default function AboutPage() {
                 className="inline-flex items-center gap-2 rounded-xl bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-200"
               >
                 <FileText className="h-4 w-4 text-brand-gold-600" />
-                <span>Brochure Asset</span>
+                <span>Download Official Brochure</span>
               </a>
             </div>
           </div>
@@ -234,7 +234,7 @@ export default function AboutPage() {
       </section>
 
       {/* 5. Contact CTA */}
-      <section className="mx-auto max-w-7xl max-w-xl space-y-4 px-4 text-center sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-xl space-y-4 px-4 text-center sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold text-brand-blue-950">
           Have an Upcoming Project in Bangalore?
         </h2>

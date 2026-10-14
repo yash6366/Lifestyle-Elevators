@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Download, FileText, CheckCircle2, Eye, ExternalLink } from 'lucide-react';
+import { Download, FileText, Eye, ExternalLink } from 'lucide-react';
 import { COMPANY } from '@/config/company';
 import { ShareBrochure } from './ShareBrochure';
 
@@ -160,10 +160,6 @@ export function BrochureViewer() {
                 </span>
                 <h4 className="text-sm font-bold text-slate-900">{p.title}</h4>
                 <p className="text-xs leading-relaxed text-slate-600">{p.desc}</p>
-              </div>
-              <div className="mt-4 flex items-center gap-1.5 border-t border-slate-100 pt-3 text-[11px] font-medium text-emerald-700">
-                <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
-                <span>Verified Content</span>
               </div>
             </div>
           ))}

@@ -61,7 +61,7 @@ export function Header() {
           >
             <div className="relative h-14 w-44 sm:w-52">
               <Image
-                src="/images/branding/logo.png"
+                src="/images/branding/logo.svg"
                 alt="Lifestyle Elevators Logo"
                 fill
                 priority

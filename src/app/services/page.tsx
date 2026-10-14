@@ -27,7 +27,7 @@ export default function ServicesPage() {
     <div className="flex flex-col gap-20 pb-24 sm:gap-24">
       {/* 1. Header Hero */}
       <section className="border-b border-brand-blue-900 bg-brand-blue-950 py-16 text-white sm:py-24">
-        <div className="mx-auto max-w-3xl max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
           <span className="mb-3 inline-block rounded-full border border-brand-gold-400/30 bg-brand-gold-500/20 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-gold-300">
             End-to-End Vertical Mobility Care
           </span>
@@ -151,10 +151,12 @@ export default function ServicesPage() {
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-blue-900 text-xs font-bold text-white">
                 2
               </span>
-              <h4 className="text-base font-bold text-brand-blue-950">Laser-Plumb Erection</h4>
+              <h4 className="text-base font-bold text-brand-blue-950">
+                Site Erection with Modern Equipment
+              </h4>
               <p className="text-xs leading-relaxed text-slate-600">
-                Installation of guide rails, car slings, counterweights, and doors using
-                high-accuracy laser equipment to ensure zero vibration and smooth ride quality.
+                Installation works are carried out using the latest technology equipment to meet the
+                demands of the building and ensure reliable, smooth operation.
               </p>
             </div>
 
