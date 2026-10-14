@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-navy: #0c2440;
+  --primary-gold: #c59b27;
+  --primary-gold-hover: #b0841f;
+  --surface-light: #f8fafc;
+  --surface-dark: #071628;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply flex min-h-screen flex-col bg-slate-50 text-slate-900 selection:bg-brand-gold-500 selection:text-white;
+  }
+
+  /* Accessible focus ring for keyboard navigation */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-gold-500 ring-offset-2 ring-offset-white;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Custom subtle gold gradient */
+  .bg-gold-gradient {
+    background: linear-gradient(135deg, #d4af37 0%, #c59b27 50%, #996515 100%);
+  }
+
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #dfc26b 0%, #c59b27 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
