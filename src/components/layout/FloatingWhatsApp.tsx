@@ -69,7 +69,7 @@ export function FloatingWhatsApp() {
                 <span>Call Lifestyle Elevators</span>
               </p>
               <p className="mt-0.5 text-[11px] text-slate-500">
-                WhatsApp leads awaiting number confirmation. Tap to call our primary office desk
+                Direct WhatsApp chat is currently unavailable. Tap to call our primary office desk
                 directly.
               </p>
             </div>

@@ -15,6 +15,8 @@ test.describe('Quotation & WhatsApp Lead Workflow', () => {
 
   test('validates form inputs and prevents submission when empty', async ({ page }) => {
     await page.goto('/quote');
+    const nameInput = page.getByLabel(/Your Full Name/i);
+    await expect(nameInput).toBeVisible();
     const submitBtn = page.getByRole('button', { name: /Request Quotation via WhatsApp/i });
     await submitBtn.click();
 
@@ -26,8 +28,10 @@ test.describe('Quotation & WhatsApp Lead Workflow', () => {
 
   test('submits valid form and launches WhatsApp click-to-chat delivery', async ({ page }) => {
     await page.goto('/quote');
+    const nameInput = page.getByLabel(/Your Full Name/i);
+    await expect(nameInput).toBeVisible();
 
-    await page.getByLabel(/Your Full Name/i).fill('Naveen Gowda');
+    await nameInput.fill('Naveen Gowda');
     await page.getByLabel(/Contact Phone Number/i).fill('+91 9986028416');
     await page.getByLabel(/Project Location/i).fill('Jayanagar, Bangalore');
     await page.getByLabel(/Specific Requirements/i).fill('4 Stops, SS Wooden Cabin');
@@ -39,10 +43,13 @@ test.describe('Quotation & WhatsApp Lead Workflow', () => {
     await submitBtn.click();
 
     // Verify WhatsApp Click-to-Chat Launch state
-    await expect(page.getByText('WhatsApp Click-to-Chat Launched!')).toBeVisible();
+    await expect(page.getByTestId('whatsapp-success-banner')).toBeVisible();
     await expect(
-      page.getByText(/Your quotation details have been prefilled into WhatsApp/i)
+      page.getByText(/Your quotation message is ready\. WhatsApp will open/i)
     ).toBeVisible();
+    await expect(
+      page.getByText(/undergoing final client verification/i)
+    ).not.toBeVisible();
 
     const popup = await popupPromise;
     if (popup) {
@@ -53,8 +60,10 @@ test.describe('Quotation & WhatsApp Lead Workflow', () => {
 
   test('submits valid contact form and launches WhatsApp delivery', async ({ page }) => {
     await page.goto('/contact');
+    const nameInput = page.getByLabel(/Your Name/i);
+    await expect(nameInput).toBeVisible();
 
-    await page.getByLabel(/Your Name/i).fill('Kiran Rao');
+    await nameInput.fill('Kiran Rao');
     await page.getByLabel(/Phone Number/i).fill('+91 9986028416');
     await page.getByLabel(/Enquiry Subject/i).fill('Elevator Maintenance AMC');
     await page.getByLabel(/Your Message/i).fill(

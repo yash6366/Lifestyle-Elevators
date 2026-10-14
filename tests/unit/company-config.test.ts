@@ -32,21 +32,28 @@ describe('Company Configuration Integrity', () => {
     expect(COMPANY.brochure.totalPages).toBe(8);
   });
 
-  it('correctly reports WhatsApp as unconfigured by default (PRD §1 & §8)', () => {
+  it('falls back to company primary line (917795551118) by default', () => {
     delete process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
     delete process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS;
 
     const config = getWhatsAppConfig();
-    expect(config.isConfigured).toBe(false);
-    expect(config.number).toBe('');
+    expect(config.isConfigured).toBe(true);
+    expect(config.number).toBe('917795551118');
   });
 
-  it('reports WhatsApp as configured only when verified and enabled', () => {
+  it('normalizes formatted environment numbers into pure digits', () => {
     process.env.NEXT_PUBLIC_WHATSAPP_NUMBER = '+91 77955 51118';
     process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS = 'true';
 
     const config = getWhatsAppConfig();
     expect(config.isConfigured).toBe(true);
     expect(config.number).toBe('917795551118');
+  });
+
+  it('respects explicit disabling via NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS=false', () => {
+    process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS = 'false';
+
+    const config = getWhatsAppConfig();
+    expect(config.isConfigured).toBe(false);
   });
 });

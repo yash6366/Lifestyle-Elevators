@@ -58,21 +58,26 @@ export const COMPANY = {
 } as const;
 
 /**
- * Verified WhatsApp Configuration Guard
- * Returns the configured WhatsApp number or null if unverified / unconfigured.
+ * WhatsApp Configuration Guard
+ * Returns the configured WhatsApp number or null if unconfigured/disabled.
+ * Primary source of truth is NEXT_PUBLIC_WHATSAPP_NUMBER with fallback to COMPANY.phones[0].
+ * Enabled by default unless explicitly disabled with NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS='false'.
  */
 export function getWhatsAppConfig() {
-  const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.trim() || '';
-  const isEnabled = process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS === 'true';
+  const envNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.trim();
+  const defaultNumber = COMPANY.phones[0].raw; // '+917795551118'
+  const rawNumber = envNumber !== undefined && envNumber !== '' ? envNumber : defaultNumber;
 
-  // Sanitize number: remove any +, spaces, dashes
-  const cleanNumber = envNumber.replace(/[^0-9]/g, '');
+  // Sanitize number: keep digits only (e.g. 917795551118)
+  const cleanNumber = rawNumber.replace(/[^0-9]/g, '');
 
-  const isConfigured = Boolean(isEnabled && cleanNumber.length >= 10);
+  // Enabled by default unless explicitly disabled via 'false'
+  const isExplicitlyDisabled = process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS === 'false';
+  const isConfigured = Boolean(!isExplicitlyDisabled && cleanNumber.length >= 10);
 
   return {
     isConfigured,
     number: cleanNumber,
-    rawEnv: envNumber,
+    rawEnv: envNumber || defaultNumber,
   };
 }

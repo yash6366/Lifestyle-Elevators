@@ -54,6 +54,7 @@ export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
   const [submitting, setSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
   const [generatedMessage, setGeneratedMessage] = useState<string | null>(null);
+  const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
   const [submissionStatus, setSubmissionStatus] = useState<
     'idle' | 'opened_whatsapp' | 'unconfigured_fallback'
   >('idle');
@@ -94,11 +95,14 @@ export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
     const result = buildWhatsAppUrl(message);
 
     if (result.success && result.url && waConfig.isConfigured) {
-      // Validated and verified WhatsApp number configured
+      setGeneratedUrl(result.url);
       setSubmissionStatus('opened_whatsapp');
-      window.open(result.url, '_blank', 'noopener,noreferrer');
+      try {
+        window.open(result.url, '_blank', 'noopener,noreferrer');
+      } catch {
+        // Fallback to manual link click
+      }
     } else {
-      // PRD §1 & §8: Guard against unconfigured numbers. Offer graceful fallback.
       setSubmissionStatus('unconfigured_fallback');
     }
     setSubmitting(false);
@@ -130,7 +134,15 @@ export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
+      <form
+        action="#"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(onSubmit)(e);
+        }}
+        className="space-y-6"
+        noValidate
+      >
         {/* Full Name */}
         <div>
           <label
@@ -142,7 +154,7 @@ export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
           <input
             id="fullName"
             type="text"
-            placeholder="e.g. Ramesh Kumar"
+            placeholder="Enter your full name"
             {...register('fullName')}
             aria-invalid={errors.fullName ? 'true' : 'false'}
             aria-describedby={errors.fullName ? 'fullName-error' : undefined}
@@ -306,39 +318,84 @@ export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
         </div>
       </form>
 
-      {/* SUCCESS: When WhatsApp has opened */}
+      {/* SUCCESS: When WhatsApp quotation has been prepared */}
       {submissionStatus === 'opened_whatsapp' && (
-        <div className="animate-fade-in mt-8 space-y-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
-          <div className="flex items-center gap-2 text-sm font-bold text-emerald-800">
-            <CheckCircle2 className="h-5 w-5 text-emerald-600" />
-            <span>WhatsApp Click-to-Chat Launched!</span>
+        <div
+          data-testid="whatsapp-success-banner"
+          className="animate-fade-in mt-8 space-y-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-6"
+        >
+          <div className="flex items-start gap-3">
+            <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+            <div className="space-y-1">
+              <h4 className="text-sm font-bold text-emerald-950">
+                Quotation Message Ready to Send
+              </h4>
+              <p className="text-xs leading-relaxed text-emerald-900">
+                Your quotation message is ready. WhatsApp will open so you can review and send your
+                enquiry to Lifestyle Elevators. Please remember to press <strong>Send</strong>{' '}
+                inside WhatsApp to transmit your specifications.
+              </p>
+            </div>
           </div>
-          <p className="text-xs leading-relaxed text-emerald-900">
-            Your quotation details have been prefilled into WhatsApp. Please review and tap{' '}
-            <strong>Send</strong> in WhatsApp to transmit the message to our engineering desk.
-          </p>
+
+          <div className="flex flex-wrap items-center gap-2.5 pt-1">
+            {generatedUrl && (
+              <a
+                href={generatedUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-[#25D366] px-4 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-[#20ba59]"
+              >
+                <MessageCircle className="h-4 w-4 fill-current" />
+                <span>Open in WhatsApp</span>
+              </a>
+            )}
+
+            <button
+              type="button"
+              onClick={copyMessageToClipboard}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 transition-colors hover:bg-emerald-50"
+            >
+              {copied ? (
+                <>
+                  <Check className="h-4 w-4 text-emerald-600" />
+                  <span className="font-bold text-emerald-700">Quotation Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="h-4 w-4 text-slate-500" />
+                  <span>Copy Quotation Text</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       )}
 
-      {/* FALLBACK: When WhatsApp number is unconfigured (PRD §1 & §8) */}
+      {/* FALLBACK: When WhatsApp number is unconfigured or disabled */}
       {submissionStatus === 'unconfigured_fallback' && (
-        <div className="animate-fade-in mt-8 space-y-4 rounded-2xl border border-amber-300 bg-amber-50/90 p-6">
+        <div
+          data-testid="whatsapp-fallback-banner"
+          className="animate-fade-in mt-8 space-y-4 rounded-2xl border border-amber-300 bg-amber-50/90 p-6"
+        >
           <div className="flex items-start gap-2.5">
             <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
             <div>
-              <h4 className="text-sm font-bold text-amber-900">Quotation Formatted & Ready</h4>
+              <h4 className="text-sm font-bold text-amber-900">Quotation Formatted &amp; Ready</h4>
               <p className="mt-1 text-xs leading-relaxed text-amber-800">
-                As per company deployment policy, the official WhatsApp Business line is currently
-                undergoing final client verification. You can instantly send your formatted
-                quotation using either of our verified office telephone numbers or official email.
+                WhatsApp messaging is currently unavailable. Your quotation details have been
+                formatted below so you can copy the text or connect with our engineering team
+                directly via telephone or email.
               </p>
             </div>
           </div>
 
           {/* Formatted Message Preview */}
-          <div className="whitespace-pre-wrap rounded-xl border border-amber-200 bg-white p-4 font-mono text-xs text-slate-800">
-            {generatedMessage}
-          </div>
+          {generatedMessage && (
+            <div className="whitespace-pre-wrap rounded-xl border border-amber-200 bg-white p-4 font-mono text-xs text-slate-800">
+              {generatedMessage}
+            </div>
+          )}
 
           {/* Action Row */}
           <div className="flex flex-wrap items-center gap-2.5 pt-1">

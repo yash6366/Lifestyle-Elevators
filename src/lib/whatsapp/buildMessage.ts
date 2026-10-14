@@ -15,12 +15,20 @@ export function formatQuotationMessage(data: QuotationFormData): string {
   const lines: string[] = [
     `Hello ${COMPANY.name},`,
     '',
-    'I would like to request a quotation.',
+    'I would like to request an elevator quotation.',
     '',
     `Name: ${data.fullName.trim()}`,
     `Phone: ${data.phoneNumber.trim()}`,
-    `Product/Service: ${data.productOrService}`,
   ];
+
+  if ('email' in data && typeof (data as { email?: string }).email === 'string') {
+    const trimmedEmail = (data as { email?: string }).email?.trim();
+    if (trimmedEmail) {
+      lines.push(`Email: ${trimmedEmail}`);
+    }
+  }
+
+  lines.push(`Product/Service: ${data.productOrService}`);
 
   if (data.buildingType && data.buildingType.trim() !== '') {
     lines.push(`Building Type: ${data.buildingType.trim()}`);

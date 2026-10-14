@@ -30,7 +30,7 @@ describe('WhatsApp Message Construction & Safety Guard', () => {
     const message = formatQuotationMessage(sampleLead);
 
     expect(message).toContain('Hello Lifestyle Elevators,');
-    expect(message).toContain('I would like to request a quotation.');
+    expect(message).toContain('I would like to request an elevator quotation.');
     expect(message).toContain('Name: Anand Murthy');
     expect(message).toContain('Phone: +91 9876543210');
     expect(message).toContain('Product/Service: Passenger Lift');
@@ -56,9 +56,8 @@ describe('WhatsApp Message Construction & Safety Guard', () => {
     expect(message).not.toContain('Requirements:');
   });
 
-  it('rejects WhatsApp link generation when number is unconfigured (PRD §1 & §8)', () => {
-    delete process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
-    delete process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS;
+  it('rejects WhatsApp link generation when leads are explicitly disabled via flag', () => {
+    process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS = 'false';
 
     const message = formatQuotationMessage(sampleLead);
     const result = buildWhatsAppUrl(message);
@@ -67,6 +66,17 @@ describe('WhatsApp Message Construction & Safety Guard', () => {
     expect(result.url).toBeNull();
     expect(result.error).toBe('unconfigured');
     expect(result.messageText).toBe(message);
+  });
+
+  it('generates WhatsApp URL with default company number when env is unset', () => {
+    delete process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+    delete process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS;
+
+    const message = formatQuotationMessage(sampleLead);
+    const result = buildWhatsAppUrl(message);
+
+    expect(result.success).toBe(true);
+    expect(result.url).toContain('https://wa.me/917795551118?text=');
   });
 
   it('successfully generates WhatsApp click-to-chat URL when configured with verified number', () => {

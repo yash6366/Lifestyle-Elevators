@@ -29,7 +29,16 @@ describe('ContactForm Component', () => {
     });
   });
 
-  it('handles valid submission with unconfigured fallback display', async () => {
+  it('starts with empty customer inputs without hardcoded sample data', () => {
+    render(<ContactForm />);
+    expect(screen.getByLabelText(/Your Name/i)).toHaveValue('');
+    expect(screen.getByLabelText(/Phone Number/i)).toHaveValue('');
+    expect(screen.getByLabelText(/Email Address/i)).toHaveValue('');
+    expect(screen.getByLabelText(/Enquiry Subject/i)).toHaveValue('');
+    expect(screen.getByLabelText(/Your Message/i)).toHaveValue('');
+  });
+
+  it('handles valid submission with unconfigured fallback display without false verification claims', async () => {
     const originalEnv = { ...process.env };
     process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS = 'false';
 
@@ -54,6 +63,7 @@ describe('ContactForm Component', () => {
     await waitFor(() => {
       expect(screen.getByText(/Enquiry Formatted & Ready/i)).toBeInTheDocument();
       expect(screen.getByText(/Copy Enquiry Text/i)).toBeInTheDocument();
+      expect(screen.queryByText(/undergoing telephone line verification/i)).not.toBeInTheDocument();
     });
 
     process.env = originalEnv;

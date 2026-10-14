@@ -129,8 +129,8 @@ export function ContactForm() {
             <div>
               <h4 className="text-base font-bold text-brand-blue-950">Enquiry Formatted & Ready</h4>
               <p className="mt-1 text-xs leading-relaxed text-slate-700">
-                Direct automated WhatsApp capture is undergoing telephone line verification. Your
-                inquiry is formatted and ready to deliver immediately:
+                WhatsApp automated messaging is currently unavailable. Your inquiry has been
+                formatted below so you can copy the text or connect with us immediately:
               </p>
             </div>
           </div>
@@ -184,7 +184,15 @@ export function ContactForm() {
       )}
 
       {submissionStatus === 'idle' && (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+        <form
+          action="#"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit(onSubmit)(e);
+          }}
+          className="space-y-5"
+          noValidate
+        >
           <div>
             <label
               htmlFor="contact-name"
@@ -195,7 +203,7 @@ export function ContactForm() {
             <input
               id="contact-name"
               type="text"
-              placeholder="e.g. Suresh Gowda"
+              placeholder="Enter your name"
               {...register('name')}
               aria-invalid={errors.name ? 'true' : 'false'}
               className={cn(

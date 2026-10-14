@@ -48,7 +48,14 @@ describe('QuotationForm Component', () => {
     expect(select.value).toBe('Hydraulic Elevator');
   });
 
-  it('triggers graceful fallback when submitted while WhatsApp is unconfigured', async () => {
+  it('starts with empty customer inputs and exposes no hardcoded customer details', () => {
+    render(<QuotationForm />);
+    expect(screen.getByLabelText(/Your Full Name/i)).toHaveValue('');
+    expect(screen.getByLabelText(/Contact Phone Number/i)).toHaveValue('');
+    expect(screen.getByLabelText(/Project Location/i)).toHaveValue('');
+  });
+
+  it('triggers honest fallback without obsolete verification warnings when leads are disabled', async () => {
     const originalEnv = { ...process.env };
     process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS = 'false';
 
@@ -66,7 +73,9 @@ describe('QuotationForm Component', () => {
 
     await waitFor(() => {
       expect(screen.getByText(/Quotation Formatted & Ready/i)).toBeInTheDocument();
+      expect(screen.getByText(/WhatsApp messaging is currently unavailable/i)).toBeInTheDocument();
       expect(screen.getByText(/Copy Quotation Text/i)).toBeInTheDocument();
+      expect(screen.queryByText(/undergoing final client verification/i)).not.toBeInTheDocument();
     });
 
     process.env = originalEnv;
@@ -92,7 +101,11 @@ describe('QuotationForm Component', () => {
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
-      expect(screen.getByText(/WhatsApp Click-to-Chat Launched!/i)).toBeInTheDocument();
+      expect(screen.getByText(/Quotation Message Ready to Send/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Your quotation message is ready\. WhatsApp will open/i)
+      ).toBeInTheDocument();
+      expect(screen.queryByText(/undergoing final client verification/i)).not.toBeInTheDocument();
       expect(openSpy).toHaveBeenCalledWith(
         expect.stringContaining('https://wa.me/917795551118'),
         '_blank',
