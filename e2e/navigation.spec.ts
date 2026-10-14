@@ -32,6 +32,28 @@ test.describe('Website Navigation & Page Sanity', () => {
     ).toBeVisible();
   });
 
+  test('products page renders all 6 product images with valid sources and successful load', async ({ page }) => {
+    await page.goto('/products');
+    const expectedImages = [
+      'passenger-lift',
+      'hospital-lift',
+      'home-lift',
+      'goods-lift',
+      'hydraulic-lift',
+      'mrl-lift',
+    ];
+
+    for (const name of expectedImages) {
+      const imgLocator = page.locator(`img[src*="${name}"]`).first();
+      await imgLocator.scrollIntoViewIfNeeded();
+      await expect(imgLocator).toBeVisible();
+      await page.waitForFunction((el) => {
+        const img = el as HTMLImageElement;
+        return img.complete && img.naturalWidth > 0;
+      }, await imgLocator.elementHandle());
+    }
+  });
+
   test('services page displays all 4 services and AMC details', async ({ page }) => {
     await page.goto('/services');
     await expect(page.locator('h1')).toContainText('Our Elevator Services');
