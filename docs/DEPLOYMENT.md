@@ -8,17 +8,67 @@
 
 ## 1. Hosting on Vercel (Recommended)
 
-Next.js is developed by Vercel and deploys with zero configuration:
+Next.js is built by Vercel and deploys seamlessly with native edge caching, instant preview branches, and automatic HTTPS.
 
-1. **Connect Repository:** Import the GitHub repository `lifestyle-elevators` in the Vercel dashboard.
-2. **Framework Preset:** Next.js (automatically detected).
-3. **Build Command:** `npm run build`
-4. **Output Directory:** `.next`
-5. **Environment Variables:**
-   - `NEXT_PUBLIC_SITE_URL`: `https://lifestyleelevators.in`
-   - `NEXT_PUBLIC_WHATSAPP_NUMBER`: (Set to confirmed WhatsApp number, e.g. `917795551118` or `919986028416`)
-   - `NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS`: Set to `true` once number is verified by client.
-6. Click **Deploy**.
+### Method A: Deploy via GitHub + Vercel Dashboard (Zero-Click CI/CD)
+
+1. **Push Code to GitHub:**
+   ```bash
+   git remote add origin https://github.com/<your-username>/lifestyle-elevators.git
+   git branch -M main
+   git push -u origin main
+   ```
+2. **Import into Vercel:**
+   - Log in to [vercel.com](https://vercel.com).
+   - Click **Add New...** → **Project**.
+   - Select your `lifestyle-elevators` repository and click **Import**.
+3. **Project Settings:**
+   - **Framework Preset:** Next.js (automatically detected via `vercel.json`).
+   - **Root Directory:** `./`
+   - **Build Command:** `npm run build`
+   - **Install Command:** `npm ci`
+4. **Environment Variables:**
+   Under **Environment Variables**, add:
+   - `NEXT_PUBLIC_SITE_URL`: `https://lifestyleelevators.in` (or your assigned `.vercel.app` domain)
+   - `NEXT_PUBLIC_WHATSAPP_NUMBER`: (e.g. `917795551118` or `919986028416` when confirmed)
+   - `NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS`: Set to `true` once number is confirmed.
+5. Click **Deploy**. Your website will be live in ~60 seconds with a global CDN and free SSL.
+
+---
+
+### Method B: Deploy via Vercel CLI (Direct Terminal Deployment)
+
+You can deploy directly from your local terminal using the Vercel CLI without pushing to GitHub first:
+
+1. **Deploy to Preview Environment:**
+   ```bash
+   npx vercel
+   ```
+   - Follow the interactive prompts (Link to existing project? `No`, Project name: `lifestyle-elevators`).
+   - Inspect the generated live preview URL.
+
+2. **Deploy Directly to Production:**
+   ```bash
+   npx vercel --prod
+   ```
+
+3. **Set Environment Variables via CLI:**
+   ```bash
+   npx vercel env add NEXT_PUBLIC_SITE_URL production
+   npx vercel env add NEXT_PUBLIC_WHATSAPP_NUMBER production
+   npx vercel env add NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS production
+   ```
+
+---
+
+### Custom Domain Configuration (e.g. `lifestyleelevators.in`)
+
+1. In the Vercel project dashboard, navigate to **Settings** → **Domains**.
+2. Enter your domain (e.g., `lifestyleelevators.in` and `www.lifestyleelevators.in`).
+3. Add the DNS records provided by Vercel at your domain registrar (GoDaddy, Namecheap, Google Domains):
+   - **A Record:** `@` points to `76.76.21.21`
+   - **CNAME Record:** `www` points to `cname.vercel-dns.com`
+4. Vercel will automatically provision a free Let's Encrypt SSL certificate within a few minutes.
 
 ---
 

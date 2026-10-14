@@ -4,12 +4,25 @@ export interface NavItem {
   description?: string;
 }
 
+function getSiteUrl(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL && process.env.NEXT_PUBLIC_SITE_URL.trim() !== '') {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '');
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return 'https://lifestyleelevators.in';
+}
+
 export const SITE_CONFIG = {
   name: 'Lifestyle Elevators',
   shortName: 'Lifestyle Elevators',
   description:
     'Leading elevator manufacturer, installation, repair, and AMC service provider in Bangalore, India. Specializing in Passenger, Home, Hospital, Goods, Hydraulic, and MRL lifts.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://lifestyleelevators.in',
+  url: getSiteUrl(),
   ogImage: '/images/branding/og-preview.png',
   mainNav: [
     { label: 'Home', href: '/' },
