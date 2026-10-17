@@ -250,13 +250,44 @@ export function Footer() {
           </div>
         </div>
 
+        {/* Enterprise Compliance & Sourcing Verification Strip */}
+        <div className="mt-12 rounded-2xl border border-brand-blue-900 bg-brand-blue-900/40 p-5 text-xs text-slate-400">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+            <div className="flex flex-wrap items-center justify-center gap-4 md:justify-start">
+              <span className="font-semibold text-slate-300">Engineering Standards:</span>
+              <span className="rounded-md border border-brand-blue-800 bg-brand-blue-950 px-2.5 py-1 text-slate-300">
+                ✓ Standard Hoistway Measurements (Brochure Page 8)
+              </span>
+              <span className="rounded-md border border-brand-blue-800 bg-brand-blue-950 px-2.5 py-1 text-slate-300">
+                ✓ ARD Emergency Lowering
+              </span>
+              <span className="rounded-md border border-brand-blue-800 bg-brand-blue-950 px-2.5 py-1 text-slate-300">
+                ✓ Montanari (Italy) &amp; Bharat Bijlee
+              </span>
+            </div>
+            <div className="text-center text-slate-400 md:text-right">
+              Emergency Escalation:{' '}
+              <span className="font-mono font-bold text-brand-gold-400">+91 77955 51118</span>
+            </div>
+          </div>
+        </div>
+
         {/* Bottom Legal Bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-brand-blue-900/60 pt-8 text-xs text-slate-500 sm:flex-row">
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-brand-blue-900/60 pt-8 text-xs text-slate-500 sm:flex-row">
           <p>
             © {currentYear} {COMPANY.name}. All rights reserved. Registered in Bangalore, Karnataka.
           </p>
+          <div className="flex items-center gap-4 text-slate-400">
+            <Link href="/privacy" className="transition-colors hover:text-brand-gold-400">
+              Privacy Policy
+            </Link>
+            <span>•</span>
+            <Link href="/terms" className="transition-colors hover:text-brand-gold-400">
+              Terms of Service
+            </Link>
+          </div>
           <p className="text-center text-slate-500 sm:text-right">
-            Comprehensive Vertical & Trans Movement Solutions • Safety, Reliability & Quality
+            Comprehensive Vertical &amp; Trans Movement Solutions
           </p>
         </div>
       </div>

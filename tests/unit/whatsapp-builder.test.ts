@@ -103,4 +103,77 @@ describe('WhatsApp Message Construction & Safety Guard', () => {
       'https://lifestyleelevators.in/brochures/lifestyle-elevators.pdf'
     );
   });
+
+  it('safely encodes special characters, ampersands, and unicode without malformed URLs', () => {
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER = '917795551118';
+    process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS = 'true';
+
+    const complexLead: QuotationFormData = {
+      fullName: "S. K. & Sons 'Engineering' Ltd.",
+      phoneNumber: '+91 99860 28416',
+      productOrService: 'Passenger Lift',
+      buildingType: 'Commercial',
+      projectLocation: 'Brigade Road, Bengaluru (ಬೆಂಗಳೂರು) – 560001',
+      requirements:
+        'Ground + 4 Floors & 8-Pass (544 kg), SS Rose Gold Cabin & Auto Center-Opening Doors @ 1.0 m/s',
+    };
+
+    const message = formatQuotationMessage(complexLead);
+    const result = buildWhatsAppUrl(message);
+
+    expect(result.success).toBe(true);
+    expect(result.url).not.toBeNull();
+    // Ensure URL has wa.me prefix and target number
+    expect(result.url).toContain('https://wa.me/917795551118?text=');
+    // Ensure no unencoded whitespace
+    expect(result.url).not.toContain(' ');
+    // Ensure properly URL-encoded ampersands and unicode
+    expect(result.url).toContain(encodeURIComponent("S. K. & Sons 'Engineering' Ltd."));
+    expect(result.url).toContain(encodeURIComponent('Bengaluru (ಬೆಂಗಳೂರು)'));
+    expect(result.url).toContain(encodeURIComponent('Ground + 4 Floors & 8-Pass'));
+  });
+
+  it('correctly normalizes 10-digit destination override to international format', () => {
+    const message = formatQuotationMessage(sampleLead);
+    // Passing 10-digit Indian number override
+    const result = buildWhatsAppUrl(message, '7795551118');
+
+    expect(result.success).toBe(true);
+    expect(result.url).toContain('https://wa.me/917795551118?text=');
+  });
+
+  it('preserves existing international-format numbers without corrupting them', () => {
+    const message = formatQuotationMessage(sampleLead);
+    // US international number with country code 1
+    const resultUS = buildWhatsAppUrl(message, '+1 (415) 555-2671');
+    expect(resultUS.success).toBe(true);
+    expect(resultUS.url).toContain('https://wa.me/14155552671?text=');
+
+    // UK international number with country code 44
+    const resultUK = buildWhatsAppUrl(message, '+44 7911 123456');
+    expect(resultUK.success).toBe(true);
+    expect(resultUK.url).toContain('https://wa.me/447911123456?text=');
+
+    // Already-normalized Indian number (+91 77955 51118)
+    const resultIN = buildWhatsAppUrl(message, '+91 77955 51118');
+    expect(resultIN.success).toBe(true);
+    expect(resultIN.url).toContain('https://wa.me/917795551118?text=');
+  });
+
+  it('fails safely when target phone number is invalid or too short', () => {
+    const message = formatQuotationMessage(sampleLead);
+    const result = buildWhatsAppUrl(message, '12345');
+
+    expect(result.success).toBe(false);
+    expect(result.url).toBeNull();
+    expect(result.error).toBe('unconfigured');
+  });
+
+  it('fails safely when message text is empty or blank', () => {
+    const result = buildWhatsAppUrl('   ');
+
+    expect(result.success).toBe(false);
+    expect(result.url).toBeNull();
+    expect(result.error).toBe('empty_message');
+  });
 });

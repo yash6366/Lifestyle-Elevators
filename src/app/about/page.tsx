@@ -65,9 +65,10 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col gap-20 pb-20 sm:gap-24">
       {/* 1. Header Hero */}
-      <section className="border-b border-brand-blue-900 bg-brand-blue-950 py-16 text-white sm:py-24">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <span className="mb-3 inline-block rounded-full border border-brand-gold-400/30 bg-brand-gold-500/20 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-gold-300">
+      <section className="relative overflow-hidden border-b border-brand-blue-900 bg-brand-blue-950 py-16 text-white sm:py-24">
+        <div className="bg-architectural-grid pointer-events-none absolute inset-0 opacity-30" />
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <span className="mb-3 inline-block rounded-full border border-brand-gold-400/30 bg-brand-gold-500/20 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-gold-300 backdrop-blur-md">
             Company Overview
           </span>
           <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl">

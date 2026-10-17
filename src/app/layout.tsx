@@ -100,9 +100,40 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: COMPANY.name,
+    description: SITE_CONFIG.description,
+    url: SITE_CONFIG.url,
+    telephone: COMPANY.phones[0].raw,
+    email: COMPANY.email.address,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: `${COMPANY.address.line1}, ${COMPANY.address.line2}`,
+      addressLocality: COMPANY.address.city,
+      addressRegion: COMPANY.address.state,
+      postalCode: COMPANY.address.pincode,
+      addressCountry: 'IN',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: '12.9234',
+      longitude: '77.5458',
+    },
+    image: `${SITE_CONFIG.url}/images/branding/hero-elevator.jpg`,
+    priceRange: '₹₹₹',
+  };
+
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="flex min-h-screen flex-col bg-slate-50 font-sans text-slate-900 antialiased">
+        {/* Structured Data for Search Engines */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationStructuredData) }}
+        />
+
         {/* Skip to Main Content for Accessibility */}
         <a
           href="#main-content"

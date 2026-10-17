@@ -35,12 +35,60 @@
 
   /* Custom subtle gold gradient */
   .bg-gold-gradient {
-    background: linear-gradient(135deg, #d4af37 0%, #c59b27 50%, #996515 100%);
+    background: linear-gradient(135deg, #e5c068 0%, #c59b27 50%, #9a7417 100%);
   }
 
   .text-gold-gradient {
-    background: linear-gradient(135deg, #dfc26b 0%, #c59b27 100%);
+    background: linear-gradient(135deg, #f7e2a9 0%, #dfc26b 40%, #c59b27 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  /* Architectural grid background */
+  .bg-architectural-grid {
+    background-size: 32px 32px;
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  }
+
+  .bg-architectural-grid-light {
+    background-size: 32px 32px;
+    background-image:
+      linear-gradient(to right, rgba(12, 36, 64, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(12, 36, 64, 0.03) 1px, transparent 1px);
+  }
+
+  /* Glassmorphism panels */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+  }
+
+  .glass-panel-dark {
+    background: rgba(7, 22, 40, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Shimmer button effect */
+  .shimmer-button {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 3s infinite;
   }
 }

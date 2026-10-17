@@ -89,23 +89,58 @@ export function MobileNav() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+                    'flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition-colors',
                     isActive
-                      ? 'bg-brand-blue-50 font-semibold text-brand-blue-900'
+                      ? 'bg-brand-blue-50 font-bold text-brand-blue-900'
                       : 'text-slate-700 hover:bg-slate-50 hover:text-brand-blue-900'
                   )}
                 >
                   <span>{item.label}</span>
-                  {isActive && <div className="h-1.5 w-1.5 rounded-full bg-brand-gold-500" />}
+                  {isActive && (
+                    <div className="h-2 w-2 rounded-full bg-brand-gold-500 shadow-gold-sm" />
+                  )}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="mt-8 flex flex-col gap-3 border-t border-slate-100 pt-6">
+          {/* Quick Category Badges */}
+          <div className="mt-4 rounded-2xl bg-slate-50 p-4">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              Popular Models
+            </span>
+            <div className="mt-2.5 flex flex-wrap gap-1.5">
+              <Link
+                href="/products#passenger-lift"
+                className="rounded-lg border border-slate-100 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-sm"
+              >
+                Passenger
+              </Link>
+              <Link
+                href="/products#home-lift"
+                className="rounded-lg border border-slate-100 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-sm"
+              >
+                Home / Villa
+              </Link>
+              <Link
+                href="/products#hospital-lift"
+                className="rounded-lg border border-slate-100 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-sm"
+              >
+                Hospital
+              </Link>
+              <Link
+                href="/products#goods-lift"
+                className="rounded-lg border border-slate-100 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-sm"
+              >
+                Goods
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-col gap-3 border-t border-slate-100 pt-6">
             <Link
               href="/quote"
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-gold-500 px-4 py-3 font-bold text-brand-blue-950 shadow-sm transition-colors hover:bg-brand-gold-400"
+              className="shimmer-button flex w-full items-center justify-center gap-2 rounded-xl bg-brand-gold-500 px-4 py-3.5 text-sm font-bold text-brand-blue-950 shadow-gold-sm transition-all hover:bg-brand-gold-400"
             >
               <span>Request a Quote</span>
               <ArrowRight className="h-4 w-4" />
@@ -114,7 +149,7 @@ export function MobileNav() {
             <a
               href={COMPANY.brochure.publicPath}
               download={COMPANY.brochure.filename}
-              className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
             >
               <FileText className="h-4 w-4 text-brand-gold-600" />
               <span>Download PDF Brochure</span>
@@ -123,14 +158,17 @@ export function MobileNav() {
         </div>
 
         {/* Footer Contact in Drawer */}
-        <div className="space-y-2 border-t border-slate-100 bg-slate-50 p-6 text-xs text-slate-600">
-          <p className="font-semibold text-brand-blue-900">Direct Office Reach</p>
-          <div className="flex flex-col gap-1.5">
+        <div className="space-y-3 border-t border-slate-100 bg-slate-50 p-6 text-xs text-slate-600">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+            <span className="font-bold text-brand-blue-950">Breakdown &amp; Support Hotline</span>
+          </div>
+          <div className="flex flex-col gap-2">
             {COMPANY.phones.map((phone) => (
               <a
                 key={phone.raw}
                 href={phone.telUri}
-                className="flex items-center gap-2 text-slate-700 hover:text-brand-blue-900"
+                className="flex items-center gap-2 font-mono font-medium text-slate-800 hover:text-brand-gold-600"
               >
                 <Phone className="h-3.5 w-3.5 shrink-0 text-brand-gold-600" />
                 <span>{phone.display}</span>

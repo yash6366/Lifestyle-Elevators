@@ -27,11 +27,11 @@ export const ELEVATOR_SERVICES: ElevatorService[] = [
     shortDescription:
       'Turnkey site erection and commissioning tailored to building architectural requirements using modern equipment.',
     fullDescription:
-      'Our installation works are executed after thorough technical discussions regarding the exact lift type required for your building. Our engineering teams deploy the latest technology equipment to guarantee precise plumb alignment, structural safety, and smooth ride commissioning.',
+      'Our installation works are executed after thorough technical discussions regarding the exact lift type required for your building. Our engineering teams deploy modern equipment to ensure precise plumb alignment, structural safety, and smooth ride commissioning.',
     keyHighlights: [
       'Site structural feasibility and hoistway dimensional review',
       'Discussion on lift type and traffic capacity to meet building demands',
-      'Installation carried out using latest technology erection equipment',
+      'Installation carried out using modern erection equipment',
       'Rigorous safety inspection at every stage from erection to commissioning',
       'Compliance with standard pit, overhead, and landing safety clearances',
     ],
@@ -52,7 +52,7 @@ export const ELEVATOR_SERVICES: ElevatorService[] = [
       'Diagnostic troubleshooting of elevator components and inner devices',
       'Repairing and maintenance services at market price for better functioning',
       'Restoration of core operating and safety mechanisms',
-      '24/7 repair and service support availability',
+      'Prompt repair and service support availability',
     ],
     callToAction: 'Request Repair / Service',
     iconName: 'Hammer',

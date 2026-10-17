@@ -116,4 +116,62 @@ describe('QuotationForm Component', () => {
     openSpy.mockRestore();
     process.env = originalEnv;
   });
+
+  it('pre-populates buildingType and requirements when passed from Hoistway Calculator', () => {
+    const sampleRequirements =
+      'Preliminary Specifications from Hoistway Estimator:\nCapacity: 6 Persons (408 kg)\nHoistway Shaft (WxD): 1500 x 1500 mm';
+
+    render(
+      <QuotationForm
+        initialProductOrService="Passenger Lift"
+        initialBuildingType="Commercial"
+        initialRequirements={sampleRequirements}
+      />
+    );
+
+    const buildingSelect = screen.getByLabelText(/Building Type/i) as HTMLSelectElement;
+    expect(buildingSelect.value).toBe('Commercial');
+
+    const reqTextarea = screen.getByLabelText(/Specific Requirements/i) as HTMLTextAreaElement;
+    expect(reqTextarea.value).toContain('Preliminary Specifications from Hoistway Estimator');
+    expect(reqTextarea.value).toContain('Capacity: 6 Persons (408 kg)');
+
+    expect(screen.getByTestId('calculator-prefill-banner')).toBeInTheDocument();
+  });
+
+  it('safely handles special characters, ampersands, and unicode in form submission', async () => {
+    const originalEnv = { ...process.env };
+    process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS = 'true';
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER = '917795551118';
+
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(<QuotationForm />);
+
+    fireEvent.change(screen.getByLabelText(/Your Full Name/i), {
+      target: { value: 'Dr. M & S Sharma' },
+    });
+    fireEvent.change(screen.getByLabelText(/Contact Phone Number/i), {
+      target: { value: '+91 9986028416' },
+    });
+    fireEvent.change(screen.getByLabelText(/Specific Requirements/i), {
+      target: { value: '5 Stops (G+4), 600 kg & SS Rose Gold, Bengaluru (ಬೆಂಗಳೂರು)' },
+    });
+
+    const submitBtn = screen.getByRole('button', { name: /Request Quotation via WhatsApp/i });
+    fireEvent.click(submitBtn);
+
+    await waitFor(() => {
+      expect(openSpy).toHaveBeenCalled();
+      const calledUrl = openSpy.mock.calls[0][0] as string;
+      expect(calledUrl).toContain('https://wa.me/917795551118');
+      expect(calledUrl).toContain(encodeURIComponent('Dr. M & S Sharma'));
+      expect(calledUrl).toContain(
+        encodeURIComponent('5 Stops (G+4), 600 kg & SS Rose Gold, Bengaluru (ಬೆಂಗಳೂರು)')
+      );
+    });
+
+    openSpy.mockRestore();
+    process.env = originalEnv;
+  });
 });

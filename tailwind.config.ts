@@ -42,6 +42,31 @@ const config: Config = {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         serif: ['var(--font-playfair)', 'Georgia', 'serif'],
       },
+      boxShadow: {
+        'luxury': '0 20px 40px -15px rgba(7, 22, 40, 0.12), 0 0 1px 1px rgba(7, 22, 40, 0.05)',
+        'luxury-hover': '0 30px 60px -12px rgba(7, 22, 40, 0.2), 0 0 1px 1px rgba(197, 155, 39, 0.25)',
+        'gold-glow': '0 0 25px -5px rgba(197, 155, 39, 0.4), 0 8px 16px -4px rgba(197, 155, 39, 0.2)',
+        'gold-sm': '0 2px 10px -2px rgba(197, 155, 39, 0.3)',
+      },
+      animation: {
+        'shimmer': 'shimmer 2.5s infinite linear',
+        'float-slow': 'float 6s ease-in-out infinite',
+        'pulse-subtle': 'pulseSubtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(200%)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
+        pulseSubtle: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.6' },
+        },
+      },
     },
   },
   plugins: [],

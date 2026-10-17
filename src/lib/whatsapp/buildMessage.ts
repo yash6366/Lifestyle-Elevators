@@ -62,7 +62,12 @@ export function buildWhatsAppUrl(message: string, targetNumberOverride?: string)
   }
 
   const config = getWhatsAppConfig();
-  const targetNumber = targetNumberOverride?.replace(/[^0-9]/g, '') || config.number;
+  let targetNumber = targetNumberOverride?.replace(/[^0-9]/g, '') || config.number;
+  if (targetNumber && targetNumber.length === 10) {
+    targetNumber = `91${targetNumber}`;
+  } else if (targetNumber && targetNumber.length === 11 && targetNumber.startsWith('0')) {
+    targetNumber = `91${targetNumber.slice(1)}`;
+  }
 
   // Enforce configuration guard as per PRD §1 and §8
   if (

@@ -9,7 +9,7 @@ import { AlertCircle, FileCheck } from 'lucide-react';
 
 export function DimensionTable() {
   return (
-    <div className="space-y-12">
+    <div id="brochure-dimensions" className="scroll-mt-24 space-y-12">
       {/* Verification Disclaimer as per PRD §6 */}
       <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900">
         <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />

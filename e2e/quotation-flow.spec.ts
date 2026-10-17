@@ -94,5 +94,32 @@ test.describe('Quotation & WhatsApp Lead Workflow', () => {
     await expect(waLink).toBeVisible();
     await expect(waLink).toHaveAttribute('href', /wa\.me\/917795551118/);
   });
+
+  test('calculator transfers selected specs into quotation form', async ({ page }) => {
+    await page.goto('/');
+    const calcSection = page.locator('text=Elevator Specification & Hoistway Estimator').first();
+    await calcSection.scrollIntoViewIfNeeded();
+
+    // Select Hospital & Healthcare category
+    await page.getByRole('button', { name: /Hospital & Healthcare/i }).click();
+
+    // Click Request Quote for this Dimension
+    const quoteBtn = page.getByRole('link', { name: /Request Quote for this Dimension/i });
+    await quoteBtn.click();
+
+    // Verify redirected to quote page with prefilled parameters
+    await expect(page).toHaveURL(/quote\?product=Hospital\+Lift/);
+    await expect(page.getByTestId('calculator-prefill-banner')).toBeVisible();
+
+    const productSelect = page.getByLabel(/Selected Elevator or Service/i);
+    await expect(productSelect).toHaveValue('Hospital Lift');
+
+    const buildingSelect = page.getByLabel(/Building Type/i);
+    await expect(buildingSelect).toHaveValue('Hospital');
+
+    const reqInput = page.getByLabel(/Specific Requirements/i);
+    await expect(reqInput).toHaveValue(/Preliminary Specifications from Hoistway Estimator/);
+    await expect(reqInput).toHaveValue(/Pit Depth/);
+  });
 });
 

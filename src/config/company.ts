@@ -69,7 +69,12 @@ export function getWhatsAppConfig() {
   const rawNumber = envNumber !== undefined && envNumber !== '' ? envNumber : defaultNumber;
 
   // Sanitize number: keep digits only (e.g. 917795551118)
-  const cleanNumber = rawNumber.replace(/[^0-9]/g, '');
+  let cleanNumber = rawNumber.replace(/[^0-9]/g, '');
+  if (cleanNumber.length === 10) {
+    cleanNumber = `91${cleanNumber}`;
+  } else if (cleanNumber.length === 11 && cleanNumber.startsWith('0')) {
+    cleanNumber = `91${cleanNumber.slice(1)}`;
+  }
 
   // Enabled by default unless explicitly disabled via 'false'
   const isExplicitlyDisabled = process.env.NEXT_PUBLIC_ENABLE_WHATSAPP_LEADS === 'false';

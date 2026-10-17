@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { ProductCard } from '@/components/products/ProductCard';
 import { MAIN_ELEVATOR_PRODUCTS } from '@/data/products';
@@ -7,7 +7,7 @@ import { MAIN_ELEVATOR_PRODUCTS } from '@/data/products';
 describe('ProductCard Component', () => {
   const sampleProduct = MAIN_ELEVATOR_PRODUCTS[0]; // Passenger Lift
 
-  it('renders product name, tagline, and features correctly', () => {
+  it('renders product name, tagline, and features correctly in full mode', () => {
     render(<ProductCard product={sampleProduct} />);
 
     expect(screen.getByRole('heading', { level: 3, name: sampleProduct.name })).toBeInTheDocument();
@@ -26,5 +26,21 @@ describe('ProductCard Component', () => {
       'href',
       `/quote?product=${encodeURIComponent(sampleProduct.name)}`
     );
+  });
+
+  it('renders minimal mode and triggers onSelect when clicked', () => {
+    const handleSelect = vi.fn();
+    render(<ProductCard product={sampleProduct} variant="minimal" onSelect={handleSelect} />);
+
+    expect(screen.getByRole('heading', { level: 3, name: sampleProduct.name })).toBeInTheDocument();
+    expect(screen.getByText(sampleProduct.tagline)).toBeInTheDocument();
+    // In minimal mode, the full description is not shown to keep page clean
+    expect(screen.queryByText(sampleProduct.description)).not.toBeInTheDocument();
+
+    const viewBtn = screen.getByRole('button', { name: /view specs & features/i });
+    expect(viewBtn).toBeInTheDocument();
+
+    fireEvent.click(viewBtn);
+    expect(handleSelect).toHaveBeenCalledWith(sampleProduct);
   });
 });

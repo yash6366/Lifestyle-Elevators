@@ -12,6 +12,8 @@ import { cn } from '@/lib/utils/cn';
 
 interface QuotationFormProps {
   initialProductOrService?: string;
+  initialBuildingType?: string;
+  initialRequirements?: string;
 }
 
 export function matchProductOrService(param?: string): ProductServiceOption {
@@ -50,7 +52,11 @@ export function matchProductOrService(param?: string): ProductServiceOption {
   return 'Other';
 }
 
-export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
+export function QuotationForm({
+  initialProductOrService,
+  initialBuildingType,
+  initialRequirements,
+}: QuotationFormProps) {
   const [submitting, setSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
   const [generatedMessage, setGeneratedMessage] = useState<string | null>(null);
@@ -60,6 +66,12 @@ export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
   >('idle');
 
   const matchedInitial = matchProductOrService(initialProductOrService);
+  const validBuildingType = (
+    initialBuildingType &&
+    BUILDING_TYPES.includes(initialBuildingType as (typeof BUILDING_TYPES)[number])
+      ? initialBuildingType
+      : 'Residential'
+  ) as (typeof BUILDING_TYPES)[number];
 
   const {
     register,
@@ -73,9 +85,9 @@ export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
       fullName: '',
       phoneNumber: '',
       productOrService: matchedInitial,
-      buildingType: 'Residential',
+      buildingType: validBuildingType,
       projectLocation: '',
-      requirements: '',
+      requirements: initialRequirements || '',
     },
   });
 
@@ -84,7 +96,16 @@ export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
       const match = matchProductOrService(initialProductOrService);
       setValue('productOrService', match);
     }
-  }, [initialProductOrService, setValue]);
+    if (
+      initialBuildingType &&
+      BUILDING_TYPES.includes(initialBuildingType as (typeof BUILDING_TYPES)[number])
+    ) {
+      setValue('buildingType', initialBuildingType as (typeof BUILDING_TYPES)[number]);
+    }
+    if (initialRequirements !== undefined) {
+      setValue('requirements', initialRequirements);
+    }
+  }, [initialProductOrService, initialBuildingType, initialRequirements, setValue]);
 
   const onSubmit = (data: QuotationSchemaType) => {
     setSubmitting(true);
@@ -132,6 +153,22 @@ export function QuotationForm({ initialProductOrService }: QuotationFormProps) {
           Provide your project specifications below. We will calculate shaft dimensions and generate
           an official quotation lead.
         </p>
+
+        {initialRequirements && (
+          <div
+            data-testid="calculator-prefill-banner"
+            className="mt-4 flex items-start gap-2.5 rounded-xl border border-brand-gold-300 bg-brand-gold-50/80 p-3.5 text-xs text-brand-blue-950"
+          >
+            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-brand-gold-600" />
+            <div>
+              <span className="font-bold">Dimensional Estimator Data Loaded:</span>
+              <p className="mt-0.5 text-slate-700">
+                Specifications from your hoistway selection have been pre-filled into the
+                requirements field below.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       <form
